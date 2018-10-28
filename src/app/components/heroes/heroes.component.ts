@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Hero } from "../../class/hero";
 import { HeroService } from "../../services/hero.service";
+import { Store } from "@ngrx/store";
+import { HeroesList } from "src/app/store/models/heroes-list.interface";
+import { heroesActionTypes } from "src/app/store/constants/hero.constants";
 
 @Component({
   selector: "app-heroes",
@@ -10,23 +13,23 @@ import { HeroService } from "../../services/hero.service";
 export class HeroesComponent implements OnInit {
   heroes: Hero[];
 
-  constructor(private heroService: HeroService) {}
+  constructor(
+    private heroService: HeroService,
+    private store: Store<HeroesList>
+  ) {}
 
   ngOnInit() {
-    this.getHeroes();
-  }
-  getHeroes() {
-    // this.heroes = this.heroService.getHeroes();
-    this.heroService.getHeroes().subscribe((heroes: Hero[]) => {
-      this.heroes = heroes;
-    });
+    this.store
+      .select(store => store.heroes.list)
+      .subscribe((value: Hero[]) => (this.heroes = value));
   }
   delete(hero: Hero): void {
-    this.heroService.deleteHero(hero).subscribe(
-      _ => {
-        this.heroes = this.heroes.filter(h => h !== hero);
-      }
-    );
+    this.heroService.deleteHero(hero).subscribe(_ => {
+      this.store.dispatch({
+        type: heroesActionTypes.DELTE,
+        payload: hero
+      });
+    });
   }
   add(name: string): void {
     name = name.trim();
@@ -34,7 +37,10 @@ export class HeroesComponent implements OnInit {
       return;
     }
     this.heroService.addHero({ name } as Hero).subscribe(hero => {
-      this.heroes.push(hero);
+      this.store.dispatch({
+        type: heroesActionTypes.ADD,
+        payload: hero
+      });
     });
   }
 }

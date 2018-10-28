@@ -12,4 +12,14 @@ export class Add implements Action {
   constructor(public payload: Hero) {}
 }
 
-export type HeroesActionsUnion = Load | Add;
+export class Delete implements Action {
+  readonly type = heroesActionTypes.DELTE;
+  constructor(public payload: Hero | number) {}
+}
+
+export class Update implements Action {
+  readonly type = heroesActionTypes.UPDATE;
+  constructor(public payload: Hero) {}
+}
+
+export type HeroesActionsUnion = Load | Add | Delete | Update;

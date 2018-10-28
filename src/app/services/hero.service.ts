@@ -29,14 +29,6 @@ export class HeroService {
       catchError(this.handleError("getHeroes", []))
     );
   }
-  /** GET hero by id. Will 404 if id not found */
-  getHero(id: number): Observable<Hero> {
-    const url = `${this.heroesUrl}/${id}`;
-    return this.http.get<Hero>(url).pipe(
-      tap(_ => this.log(`fetched hero id=${id}`)),
-      catchError(this.handleError<Hero>(`getHero id=${id}`))
-    );
-  }
   /** PUT: update the hero on the server */
   updateHero(hero: Hero): Observable<any> {
     return this.http.put(this.heroesUrl, hero, httpOptions).pipe(

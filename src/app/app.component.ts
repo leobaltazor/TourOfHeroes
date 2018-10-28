@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.store
       .select("heroes")
-      .subscribe((value: HeroesList) => console.log(value));
+      .subscribe((value: HeroesList) => console.log("value"));
     this.getHeroes();
   }
 

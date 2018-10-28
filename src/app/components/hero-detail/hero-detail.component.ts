@@ -4,6 +4,10 @@ import { ActivatedRoute } from "@angular/router";
 import { Location } from "@angular/common";
 
 import { HeroService } from "../../services/hero.service";
+import { store } from "@angular/core/src/render3/instructions";
+import { Store } from "@ngrx/store";
+import { HeroesList } from "src/app/store/models/heroes-list.interface";
+import { heroesActionTypes } from "src/app/store/constants/hero.constants";
 
 @Component({
   selector: "app-hero-detail",
@@ -16,10 +20,17 @@ export class HeroDetailComponent implements OnInit, OnChanges {
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
-    private location: Location
+    private location: Location,
+    private store: Store<HeroesList>
   ) {}
   save(): void {
-    this.heroService.updateHero(this.hero).subscribe(() => this.goBack());
+    this.heroService.updateHero(this.hero).subscribe(() => {
+      this.store.dispatch({
+        type: heroesActionTypes.UPDATE,
+        payload: this.hero
+      });
+      this.goBack();
+    });
   }
   goBack(): void {
     this.location.back();
@@ -27,7 +38,11 @@ export class HeroDetailComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log("OnInit");
     const id = +this.route.snapshot.paramMap.get("id");
-    this.heroService.getHero(id).subscribe(hero => (this.hero = hero));
+    this.store
+      .select(state => state.heroes.list.filter(h => h.id === id))
+      .subscribe(hero => {
+        this.hero = { ...hero[0] };
+      });
   }
   ngOnChanges() {
     console.log("OnChanges");
