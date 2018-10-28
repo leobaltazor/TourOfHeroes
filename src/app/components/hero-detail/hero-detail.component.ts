@@ -8,6 +8,7 @@ import { store } from "@angular/core/src/render3/instructions";
 import { Store } from "@ngrx/store";
 import { HeroesList } from "src/app/store/models/heroes-list.interface";
 import { heroesActionTypes } from "src/app/store/constants/hero.constants";
+import { AppStore } from "src/app/store/models/app-store.interface";
 
 @Component({
   selector: "app-hero-detail",
@@ -21,7 +22,7 @@ export class HeroDetailComponent implements OnInit, OnChanges {
     private route: ActivatedRoute,
     private heroService: HeroService,
     private location: Location,
-    private store: Store<HeroesList>
+    private store: Store<AppStore>
   ) {}
   save(): void {
     this.heroService.updateHero(this.hero).subscribe(() => {

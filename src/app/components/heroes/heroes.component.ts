@@ -4,6 +4,7 @@ import { HeroService } from "../../services/hero.service";
 import { Store } from "@ngrx/store";
 import { HeroesList } from "src/app/store/models/heroes-list.interface";
 import { heroesActionTypes } from "src/app/store/constants/hero.constants";
+import { AppStore } from "src/app/store/models/app-store.interface";
 
 @Component({
   selector: "app-heroes",
@@ -15,7 +16,7 @@ export class HeroesComponent implements OnInit {
 
   constructor(
     private heroService: HeroService,
-    private store: Store<HeroesList>
+    private store: Store<AppStore>
   ) {}
 
   ngOnInit() {

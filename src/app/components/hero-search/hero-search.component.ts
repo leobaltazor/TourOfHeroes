@@ -5,6 +5,7 @@ import { debounceTime, switchMap, distinctUntilChanged } from "rxjs/operators";
 import { HeroService } from "src/app/services/hero.service";
 import { Store } from "@ngrx/store";
 import { HeroesList } from "src/app/store/models/heroes-list.interface";
+import { AppStore } from "src/app/store/models/app-store.interface";
 
 @Component({
   selector: "app-hero-search",
@@ -17,7 +18,7 @@ export class HeroSearchComponent implements OnInit {
 
   constructor(
     private heroService: HeroService,
-    private store: Store<HeroesList>
+    private store: Store<AppStore>
   ) {}
 
   // Push a search term into the observable stream.
@@ -36,13 +37,14 @@ export class HeroSearchComponent implements OnInit {
       // switch to new search observable each time the term changes
       // switchMap((term: string) => this.heroService.searchHeroes(term))
       switchMap((term: string) =>
-        this.store.select((state: HeroesList) => {
+        this.store.select((state: AppStore) => {
           if (!term.trim()) {
             // if not search term, return empty hero array.
             return [];
           }
-          return state.heroes.list.filter((h: Hero) =>
-            h.name.toLowerCase().indexOf(terms.toLowerCase() > 0)
+          return state.heroes.list.filter((h: Hero) => {
+            return h.name.toLowerCase().indexOf(term.toLowerCase()) > -1;
+          }
           );
         })
       )

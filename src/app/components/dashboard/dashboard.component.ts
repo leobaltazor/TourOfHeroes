@@ -3,6 +3,7 @@ import { HeroService } from "../../services/hero.service";
 import { Hero } from "../../class/hero";
 import { Store } from "@ngrx/store";
 import { HeroesList } from "src/app/store/models/heroes-list.interface";
+import { AppStore } from "src/app/store/models/app-store.interface";
 
 @Component({
   selector: "app-dashboard",
@@ -14,12 +15,12 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private heroService: HeroService,
-    private store: Store<HeroesList>
+    private store: Store<AppStore>
   ) {}
 
   ngOnInit() {
     this.store
-      .select((state: HeroesList) => state.heroes.list)
+      .select((state: AppStore) => state.heroes.list)
       .subscribe((hero: Hero[]) => {
         this.heroes = hero.slice(0, 4);
       });
