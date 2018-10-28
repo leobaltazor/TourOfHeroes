@@ -39,9 +39,9 @@ export class HeroDetailComponent implements OnInit, OnChanges {
     console.log("OnInit");
     const id = +this.route.snapshot.paramMap.get("id");
     this.store
-      .select(state => state.heroes.list.filter(h => h.id === id))
+      .select(state => state.heroes.list.find(h => h.id === id))
       .subscribe(hero => {
-        this.hero = { ...hero[0] };
+        this.hero = { ...hero };
       });
   }
   ngOnChanges() {

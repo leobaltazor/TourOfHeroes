@@ -3,6 +3,8 @@ import { Observable, Subject } from "rxjs";
 import { Hero } from "src/app/class/hero";
 import { debounceTime, switchMap, distinctUntilChanged } from "rxjs/operators";
 import { HeroService } from "src/app/services/hero.service";
+import { Store } from "@ngrx/store";
+import { HeroesList } from "src/app/store/models/heroes-list.interface";
 
 @Component({
   selector: "app-hero-search",
@@ -13,7 +15,10 @@ export class HeroSearchComponent implements OnInit {
   heroes$: Observable<Hero[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(private heroService: HeroService) {}
+  constructor(
+    private heroService: HeroService,
+    private store: Store<HeroesList>
+  ) {}
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -29,7 +34,18 @@ export class HeroSearchComponent implements OnInit {
       distinctUntilChanged(),
 
       // switch to new search observable each time the term changes
-      switchMap((term: string) => this.heroService.searchHeroes(term))
+      // switchMap((term: string) => this.heroService.searchHeroes(term))
+      switchMap((term: string) =>
+        this.store.select((state: HeroesList) => {
+          if (!term.trim()) {
+            // if not search term, return empty hero array.
+            return [];
+          }
+          return state.heroes.list.filter((h: Hero) =>
+            h.name.toLowerCase().indexOf(terms.toLowerCase() > 0)
+          );
+        })
+      )
     );
   }
 }
