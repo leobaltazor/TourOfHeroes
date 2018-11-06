@@ -1,17 +1,18 @@
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from "@ngrx/effects";
 import { HeroService } from "../services/hero.service";
-import { Observable, of } from "rxjs";
+import { Observable, of, defer } from "rxjs";
 import { heroesActionTypes } from "../store/constants/hero.constants";
-import { mergeMap, map, catchError } from "rxjs/operators";
+import { mergeMap, map, catchError, tap } from "rxjs/operators";
 import { Action } from "@ngrx/store";
+import { Load } from "../store/actions/heroes.actions";
 
 @Injectable()
 export class HeroesEffects {
 
   @Effect()
   loadList$: Observable<Action> = this.actions$.pipe(
-    ofType(heroesActionTypes.LOAD),
+    ofType<Load>(heroesActionTypes.LOAD),
     mergeMap(
       () => this.heroService.getHeroes().pipe(
         // If successful, dispatch success action with result
@@ -21,6 +22,11 @@ export class HeroesEffects {
       )
    )
   );
+
+  @Effect()
+  init$: Observable<Action> = defer(() => {
+    return of(new Load);
+  });
 
   constructor(
     private actions$: Actions,

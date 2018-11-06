@@ -1,6 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { HeroService } from "./services/hero.service";
-import { Hero } from "./class/hero";
 import { Store } from "@ngrx/store";
 import { HeroesList } from "./store/models/heroes-list.interface";
 import { heroesActionTypes } from "./store/constants/hero.constants";
@@ -21,12 +19,12 @@ export class AppComponent implements OnInit {
     this.store
       .select("heroes")
       .subscribe((value: HeroesList) => console.log("value"));
-    this.getHeroes();
+    // this.getHeroes();
   }
 
-  getHeroes(): void {
-    this.store.dispatch({
-      type: heroesActionTypes.LOAD
-    });
-  }
+  // getHeroes(): void {
+  //   this.store.dispatch({
+  //     type: heroesActionTypes.LOAD
+  //   });
+  // }
 }
