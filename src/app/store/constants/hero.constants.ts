@@ -1,5 +1,7 @@
 export enum heroesActionTypes {
   LOAD = "[HEROES] LOAD",
+  LOAD_SUCCESS = "[HEROES] LOAD_SUCCESS",
+  LOAD_FAILED = "[HEROES] LOAD_FAILED",
   ADD = "[HEROES] ADD",
   DELTE = "[HEROES] DELTE",
   UPDATE = "[HEROES] UPDATE"

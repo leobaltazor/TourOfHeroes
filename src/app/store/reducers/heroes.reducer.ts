@@ -12,7 +12,7 @@ export function heroesReducer(
   action: HeroesActionsUnion
 ) {
   switch (action.type) {
-    case heroesActionTypes.LOAD:
+    case heroesActionTypes.LOAD_SUCCESS:
       return {
         ...state,
         list: action.payload

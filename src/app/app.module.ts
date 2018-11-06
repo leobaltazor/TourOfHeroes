@@ -18,6 +18,8 @@ import { MessagesComponent } from "./components/messages/messages.component";
 import { HeroSearchComponent } from "./components/hero-search/hero-search.component";
 import { heroesReducer } from "./store/reducers/heroes.reducer";
 import { environment } from "src/environments/environment";
+import { EffectsModule } from "@ngrx/effects";
+import { HeroesEffects } from "./effects/heroes.effects";
 
 @NgModule({
   imports: [
@@ -36,7 +38,8 @@ import { environment } from "src/environments/environment";
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
-    })
+    }),
+    EffectsModule.forRoot([HeroesEffects])
   ],
   declarations: [
     AppComponent,

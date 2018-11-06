@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
   title = "TourOfHeroes";
 
   constructor(
-    private heroService: HeroService,
     private store: Store<HeroesList>
   ) {}
 
@@ -26,11 +25,8 @@ export class AppComponent implements OnInit {
   }
 
   getHeroes(): void {
-    this.heroService.getHeroes().subscribe((heroes: Hero[]) => {
-      this.store.dispatch({
-        type: heroesActionTypes.LOAD,
-        payload: heroes
-      });
+    this.store.dispatch({
+      type: heroesActionTypes.LOAD
     });
   }
 }
